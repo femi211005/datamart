@@ -1,53 +1,66 @@
 package com.example.datamart.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import com.example.datamart.R;
-import com.example.datamart.model.ReviewItem;
+import com.example.datamart.model.Review; // Sesuaikan dengan nama model review-mu
+
 import java.util.List;
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
-    private List<ReviewItem> reviewList;
+    private final Context context;
+    private final List<Review> reviewList;
 
-    public ReviewAdapter(List<ReviewItem> reviewList) {
+    public ReviewAdapter(Context context, List<Review> reviewList) {
+        this.context = context;
         this.reviewList = reviewList;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
-        return new ViewHolder(view);
+    public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_review, parent, false);
+        return new ReviewViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ReviewItem review = reviewList.get(position);
-        holder.tvAuthor.setText(review.getReviewAuthor());
-        holder.tvRating.setText("⭐ " + review.getReviewRating());
-        holder.tvTitle.setText(review.getReviewTitle());
-        holder.tvComment.setText(review.getReviewComment());
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        Review review = reviewList.get(position);
+
+        holder.tvReviewerName.setText(review.getReviewerName());
+        holder.tvReviewComment.setText(review.getReviewDescription());
+        holder.tvReviewRating.setText("Rating: " + review.getReviewRating());
+
+        // Load foto profil pengulas jika disediakan oleh API Amazon
+        Glide.with(context)
+                .load(review.getReviewerImage())
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .into(holder.ivReviewerPhoto);
     }
 
     @Override
     public int getItemCount() {
-        return reviewList.size();
+        return reviewList != null ? reviewList.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvAuthor, tvRating, tvTitle, tvComment;
+    public static class ReviewViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivReviewerPhoto;
+        TextView tvReviewerName, tvReviewComment, tvReviewRating;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvAuthor = itemView.findViewById(R.id.tvReviewAuthor);
-            tvRating = itemView.findViewById(R.id.tvReviewRating);
-            tvTitle = itemView.findViewById(R.id.tvReviewTitle);
-            tvComment = itemView.findViewById(R.id.tvReviewComment);
+            ivReviewerPhoto = itemView.findViewById(R.id.ivReviewerPhoto);
+            tvReviewerName = itemView.findViewById(R.id.tvReviewerName);
+            tvReviewComment = itemView.findViewById(R.id.tvReviewComment);
+            tvReviewRating = itemView.findViewById(R.id.tvReviewRating);
         }
     }
 }

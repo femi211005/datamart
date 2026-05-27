@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/nav_home"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Katalog" />
+        android:id="@+id/menu_beranda"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Beranda" />
+
     <item
-        android:id="@+id/nav_cart"
-        android:icon="@drawable/ic_shopping_cart"
-        android:title="Keranjang" />
+        android:id="@+id/menu_kategori"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Kategori" />
+
+    <item
+        android:id="@+id/menu_pesanan"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Pesanan" />
+
+    <item
+        android:id="@+id/menu_pengaturan"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Pengaturan" />
+
 </menu>

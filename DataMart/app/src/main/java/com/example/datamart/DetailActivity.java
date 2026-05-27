@@ -1,122 +1,83 @@
 package com.example.datamart;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-
-import com.example.datamart.R;
-import com.example.datamart.adapter.ReviewAdapter;
-import com.example.datamart.api.ApiClient;
-import com.example.datamart.api.ApiService;
-import com.example.datamart.model.ReviewResponse;
-import com.example.datamart.model.Product; // Import model produk
-import com.example.datamart.db.DatabaseHelper; // Import database SQLite kita
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.datamart.db.DatabaseHelper;
+import com.google.android.material.button.MaterialButton;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ImageView ivDetailImage;
-    private TextView tvDetailTitle, tvDetailPrice;
-    private Button btnAddToCart;
-    private RecyclerView rvReviews;
+    private ImageView ivProductMain;
+    private TextView tvDetailProductName, tvProductPrice;
+    private ImageButton btnAddToCartSmall;
+    private MaterialButton btnOrderNow;
 
-    private ReviewAdapter reviewAdapter;
-    private ApiService apiService;
-    private DatabaseHelper dbHelper; // Variabel Gudang SQLite
+    private DatabaseHelper dbHelper;
 
-    private String productId, title, price, imageUrl;
+    // Variabel penampung data produk
+    private String productAsin, productTitle, productPrice, productImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail_product);
 
-        ivDetailImage = findViewById(R.id.ivDetailImage);
-        tvDetailTitle = findViewById(R.id.tvDetailTitle);
-        tvDetailPrice = findViewById(R.id.tvDetailPrice);
-        btnAddToCart = findViewById(R.id.btnAddToCart);
-        rvReviews = findViewById(R.id.rvReviews);
-
-        rvReviews.setLayoutManager(new LinearLayoutManager(this));
-
-        apiService = ApiClient.getClient().create(ApiService.class);
-        // Membuka koneksi ke Database SQLite
+        // 1. Inisialisasi Database dan View
         dbHelper = new DatabaseHelper(this);
 
-        productId = getIntent().getStringExtra("EXTRA_ID");
-        title = getIntent().getStringExtra("EXTRA_TITLE");
-        price = getIntent().getStringExtra("EXTRA_PRICE");
-        imageUrl = getIntent().getStringExtra("EXTRA_IMAGE");
+        ivProductMain = findViewById(R.id.ivProductMain);
+        // Pastikan ID ini ditambahkan di TextView harga pada activity_detail_product.xml jika belum ada
+        tvDetailProductName = findViewById(R.id.tvDetailProductName);
+        // Catatan: Jika di XML harga belum punya ID, cari TextView harga "Rp 2.499.000" lalu beri id: android:id="@+id/tvDetailProductPrice"
+        tvProductPrice = findViewById(R.id.tvDetailProductPrice);
 
-        tvDetailTitle.setText(title);
-        tvDetailPrice.setText(price);
+        btnAddToCartSmall = findViewById(R.id.btnAddToCartSmall);
+        btnOrderNow = findViewById(R.id.btnOrderNow);
 
-        Glide.with(this).load(imageUrl).into(ivDetailImage);
+        // 2. Tangkap Data Intent dari ProductAdapter
+        Intent intent = getIntent();
+        if (intent != null) {
+            productAsin = intent.getStringExtra("PRODUCT_ASIN");
+            productTitle = intent.getStringExtra("PRODUCT_TITLE");
+            productPrice = intent.getStringExtra("PRODUCT_PRICE");
+            productImage = intent.getStringExtra("PRODUCT_IMAGE");
 
-        if (productId != null) {
-            fetchReviews(productId);
+            // 3. Pasang Data ke Tampilan Lumina
+            tvDetailProductName.setText(productTitle);
+            if (tvProductPrice != null) {
+                tvProductPrice.setText(productPrice);
+            }
+
+            // Tampilkan gambar asli produk dari Amazon menggunakan Glide
+            Glide.with(this)
+                    .load(productImage)
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .into(ivProductMain);
         }
 
-        // --- PENERAPAN BACKGROUND THREAD (Syarat Aslab No. 5) ---
-        btnAddToCart.setOnClickListener(v -> {
-            // Matikan tombol sementara agar tidak diklik berkali-kali (spam)
-            btnAddToCart.setEnabled(false);
-            btnAddToCart.setText("Menyimpan...");
-
-            // 1. Buat pekerja untuk Background Thread
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            // 2. Buat penghubung untuk kembali ke Main Thread
-            Handler handler = new Handler(Looper.getMainLooper());
-
-            executor.execute(() -> {
-                // Proses penyimpanan data berat ini berjalan di latar belakang
-                Product productToSave = new Product(productId, title, price, imageUrl);
-                boolean isSuccess = dbHelper.addToCart(productToSave);
-
-                // Kembali ke Main Thread untuk mengupdate layar (UI)
-                handler.post(() -> {
-                    // Nyalakan tombolnya kembali
-                    btnAddToCart.setEnabled(true);
-                    btnAddToCart.setText("Tambah ke Keranjang");
-
-                    if (isSuccess) {
-                        Toast.makeText(DetailActivity.this, "Berhasil masuk keranjang! 🛒", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(DetailActivity.this, "Barang ini sudah ada di keranjangmu!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            });
-        });
-    }
-
-    private void fetchReviews(String asin) {
-        apiService.getProductReviews(asin, "US", "TOP_REVIEWS").enqueue(new Callback<ReviewResponse>() {
-            @Override
-            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                    reviewAdapter = new ReviewAdapter(response.body().getData().getReviews());
-                    rvReviews.setAdapter(reviewAdapter);
+        // 4. LOGIKA TOMBOL MASUKKAN KERANJANG (SQLite)
+        btnAddToCartSmall.setOnClickListener(v -> {
+            if (productAsin != null) {
+                boolean isSuccess = dbHelper.addToCart(productAsin, productTitle, productPrice, productImage, 1);
+                if (isSuccess) {
+                    Toast.makeText(DetailActivity.this, "Berhasil ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DetailActivity.this, "Gagal menambahkan ke keranjang", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
 
-            @Override
-            public void onFailure(Call<ReviewResponse> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, "Gagal memuat ulasan produk.", Toast.LENGTH_SHORT).show();
-            }
+        // 5. LOGIKA TOMBOL PESAN SEKARANG (Langsung Lompat ke Checkout)
+        btnOrderNow.setOnClickListener(v -> {
+            Intent checkoutIntent = new Intent(DetailActivity.this, CheckoutActivity.class); // Sesuaikan nama kelas activity checkout-mu
+            startActivity(checkoutIntent);
         });
     }
 }

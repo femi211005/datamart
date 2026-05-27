@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0F172A</color> <color name="colorPrimaryDark">#0B1120</color> <color name="colorAccent">#FF9900</color> <color name="colorBackground">#F8FAFC</color>
-    <color name="white">#FFFFFF</color>
-
-    <color name="textPrimary">#1E293B</color>
-    <color name="textSecondary">#64748B</color>
-</resources>
+    <color name="lumina_blue">#0056D2</color> <color name="lumina_blue_light">#EAF2FF</color> <color name="background_light">#F8F9FA</color> <color name="text_primary">#1A1A1A</color> <color name="text_secondary">#757575</color> <color name="white">#FFFFFF</color>
+    <color name="red_danger">#E53935</color> <color name="orange_warning">#FF9800</color> </resources>

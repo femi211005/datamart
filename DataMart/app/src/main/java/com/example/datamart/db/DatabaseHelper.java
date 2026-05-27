@@ -5,22 +5,30 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.datamart.model.Product;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Informasi Database
-    private static final String DATABASE_NAME = "datamart_db";
+    private static final String DATABASE_NAME = "LuminaCart.db";
     private static final int DATABASE_VERSION = 1;
 
     // Nama Tabel dan Kolom
-    private static final String TABLE_CART = "cart";
-    private static final String COLUMN_ID = "asin"; // ID unik produk dari Amazon
-    private static final String COLUMN_TITLE = "title";
-    private static final String COLUMN_PRICE = "price";
-    private static final String COLUMN_IMAGE = "image";
+    public static final String TABLE_CART = "cart";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_ASIN = "asin";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_PRICE = "price";
+    public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_QUANTITY = "quantity";
+
+    // Kueri membuat tabel
+    private static final String TABLE_CREATE =
+            "CREATE TABLE " + TABLE_CART + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_ASIN + " TEXT UNIQUE, " +
+                    COLUMN_TITLE + " TEXT, " +
+                    COLUMN_PRICE + " TEXT, " +
+                    COLUMN_IMAGE + " TEXT, " +
+                    COLUMN_QUANTITY + " INTEGER);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,13 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Perintah SQL untuk membuat tabel keranjang
-        String createTable = "CREATE TABLE " + TABLE_CART + " (" +
-                COLUMN_ID + " TEXT PRIMARY KEY, " +
-                COLUMN_TITLE + " TEXT, " +
-                COLUMN_PRICE + " TEXT, " +
-                COLUMN_IMAGE + " TEXT)";
-        db.execSQL(createTable);
+        db.execSQL(TABLE_CREATE);
     }
 
     @Override
@@ -43,41 +45,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Fungsi untuk memasukkan barang ke keranjang
-    public boolean addToCart(Product product) {
+    // FUNGSI 1: TAMBAH ATAU UPDATE UPDATE JUMLAH BARANG DI KERANJANG
+    public boolean addToCart(String asin, String title, String price, String image, int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, product.getAsin());
-        values.put(COLUMN_TITLE, product.getTitle());
-        values.put(COLUMN_PRICE, product.getPrice());
-        values.put(COLUMN_IMAGE, product.getPhotoUrl());
 
-        // Insert data, jika ID sudah ada maka akan gagal (mencegah barang duplikat)
-        long result = db.insertWithOnConflict(TABLE_CART, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-        db.close();
-        return result != -1; // Mengembalikan true jika berhasil disimpan
+        // Cek dulu apakah produk ini sudah ada di keranjang
+        Cursor cursor = db.query(TABLE_CART, new String[]{COLUMN_QUANTITY}, COLUMN_ASIN + "=?", new String[]{asin}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Jika sudah ada, tinggal tambahkan jumlahnya (quantity)
+            int currentQty = cursor.getInt(0);
+            values.put(COLUMN_QUANTITY, currentQty + quantity);
+            long result = db.update(TABLE_CART, values, COLUMN_ASIN + "=?", new String[]{asin});
+            cursor.close();
+            return result != -1;
+        } else {
+            // Jika belum ada, masukkan data baru
+            values.put(COLUMN_ASIN, asin);
+            values.put(COLUMN_TITLE, title);
+            values.put(COLUMN_PRICE, price);
+            values.put(COLUMN_IMAGE, image);
+            values.put(COLUMN_QUANTITY, quantity);
+            long result = db.insert(TABLE_CART, null, values);
+            if (cursor != null) cursor.close();
+            return result != -1;
+        }
     }
 
-    // Fungsi untuk mengambil semua barang di keranjang
-    public List<Product> getAllCartItems() {
-        List<Product> cartList = new ArrayList<>();
+    // FUNGSI 2: AMBIL SEMUA DATA KERANJANG (Akan dipakai di CartFragment)
+    public Cursor getCartItems() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CART, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_CART, null);
+    }
 
-        if (cursor.moveToFirst()) {
-            do {
-                // Membongkar data dari SQLite kembali menjadi objek Product
-                Product product = new Product(
-                        cursor.getString(0), // asin
-                        cursor.getString(1), // title
-                        cursor.getString(2), // price
-                        cursor.getString(3)  // image
-                );
-                cartList.add(product);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return cartList;
+    // FUNGSI 3: HAPUS BARANG DARI KERANJANG
+    public void deleteCartItem(String asin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CART, COLUMN_ASIN + "=?", new String[]{asin});
     }
 }
