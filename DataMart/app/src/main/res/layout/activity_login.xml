@@ -95,6 +95,7 @@
                     app:startIconTint="@color/text_secondary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmailLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Masukkan email Anda"
@@ -128,6 +129,7 @@
                     app:startIconTint="@color/text_secondary">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPasswordLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="••••••••"
@@ -147,6 +149,7 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="24dp"
@@ -233,6 +236,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tvGoToRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Daftar sekarang"
@@ -246,7 +250,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/bg_banner_gradient"
+            android:background="@color/lumina_blue"
             android:orientation="vertical"
             android:padding="20dp">
 

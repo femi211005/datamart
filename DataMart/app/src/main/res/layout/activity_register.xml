@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- 1. HEADER: Logo dan Nama Aplikasi Berjajar Horizontal -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +44,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- 2. JUDUL DAN SUBJUDUL -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,9 +62,6 @@
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
-        <!-- 3. FORM ISIAN (Tanpa CardView) -->
-
-        <!-- Input Nama Lengkap -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +86,7 @@
             app:startIconTint="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNameReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Masukkan nama lengkap"
@@ -99,7 +95,6 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Input Email -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,6 +119,7 @@
             app:startIconTint="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="contoh@email.com"
@@ -132,40 +128,6 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Input Nomor Telepon -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nomor Telepon"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            app:boxBackgroundColor="#F4F6F9"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeColor="#E0E0E0"
-            app:startIconDrawable="@android:drawable/ic_menu_call"
-            app:startIconTint="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="0812xxxx"
-                android:inputType="phone"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Input Kata Sandi -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -192,6 +154,7 @@
             app:startIconTint="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordReg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Min. 8 karakter"
@@ -200,7 +163,6 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 4. SYARAT & KETENTUAN (CHECKBOX) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -225,7 +187,6 @@
                 android:lineSpacingExtra="4dp"/>
         </LinearLayout>
 
-        <!-- 5. TOMBOL DAFTAR -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
@@ -238,7 +199,6 @@
             app:backgroundTint="@color/lumina_blue"
             app:cornerRadius="28dp" />
 
-        <!-- 6. PEMISAH SOSIAL MEDIA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -267,7 +227,6 @@
                 android:background="#E0E0E0" />
         </LinearLayout>
 
-        <!-- 7. TOMBOL SOSIAL MEDIA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -300,7 +259,6 @@
                 app:strokeColor="#E0E0E0" />
         </LinearLayout>
 
-        <!-- 8. FOOTER MASUK -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

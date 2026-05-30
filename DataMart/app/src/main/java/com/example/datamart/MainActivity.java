@@ -2,6 +2,7 @@ package com.example.datamart;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // PERBAIKAN: Menggunakan ID yang benar dari activity_main.xml
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         if (savedInstanceState == null) {
@@ -35,10 +37,15 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
-            if (item.getItemId() == R.id.nav_home) {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_beranda) {
                 selectedFragment = new HomeFragment();
-            } else if (item.getItemId() == R.id.nav_cart) {
+            } else if (itemId == R.id.menu_pesanan) {
                 selectedFragment = new CartFragment();
+            } else if (itemId == R.id.menu_kategori) {
+                Toast.makeText(MainActivity.this, "Halaman Kategori sedang dibangun", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.menu_pengaturan) {
+                Toast.makeText(MainActivity.this, "Halaman Pengaturan sedang dibangun", Toast.LENGTH_SHORT).show();
             }
 
             if (selectedFragment != null) {
