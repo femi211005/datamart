@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.datamart.R;
-import com.example.datamart.model.Category; // Sesuaikan dengan nama model kategorimu
+import com.example.datamart.model.CategoryItem; // Menggunakan file asli milikmu
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private final Context context;
-    private final List<Category> categoryList;
+    private final List<CategoryItem> categoryList; // Menggunakan CategoryItem
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public CategoryAdapter(Context context, List<CategoryItem> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
     }
@@ -32,12 +32,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Category category = categoryList.get(position);
+        CategoryItem category = categoryList.get(position);
 
         // Menampilkan nama kategori dari Amazon
+        // Catatan: Jika di file CategoryItem.java milikmu nama fungsinya bervariasi,
+        // kamu bisa sesuaikan antara getName() atau getCategoryName()
         holder.tvCategoryName.setText(category.getName());
 
-        // Menggunakan ikon bawaan default dulu sebagai placeholder
         holder.ivCategoryIcon.setImageResource(android.R.drawable.ic_menu_gallery);
     }
 

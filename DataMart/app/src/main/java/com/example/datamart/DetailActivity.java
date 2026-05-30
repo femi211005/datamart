@@ -33,11 +33,8 @@ public class DetailActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         ivProductMain = findViewById(R.id.ivProductMain);
-        // Pastikan ID ini ditambahkan di TextView harga pada activity_detail_product.xml jika belum ada
         tvDetailProductName = findViewById(R.id.tvDetailProductName);
-        // Catatan: Jika di XML harga belum punya ID, cari TextView harga "Rp 2.499.000" lalu beri id: android:id="@+id/tvDetailProductPrice"
         tvProductPrice = findViewById(R.id.tvDetailProductPrice);
-
         btnAddToCartSmall = findViewById(R.id.btnAddToCartSmall);
         btnOrderNow = findViewById(R.id.btnOrderNow);
 
@@ -49,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
             productPrice = intent.getStringExtra("PRODUCT_PRICE");
             productImage = intent.getStringExtra("PRODUCT_IMAGE");
 
-            // 3. Pasang Data ke Tampilan Lumina
+            // 3. Pasang Data ke Tampilan
             tvDetailProductName.setText(productTitle);
             if (tvProductPrice != null) {
                 tvProductPrice.setText(productPrice);
@@ -74,10 +71,10 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        // 5. LOGIKA TOMBOL PESAN SEKARANG (Langsung Lompat ke Checkout)
+        // 5. LOGIKA TOMBOL PESAN SEKARANG
+        // (CheckoutActivity dimatikan sementara agar tidak error merah)
         btnOrderNow.setOnClickListener(v -> {
-            Intent checkoutIntent = new Intent(DetailActivity.this, CheckoutActivity.class); // Sesuaikan nama kelas activity checkout-mu
-            startActivity(checkoutIntent);
+            Toast.makeText(DetailActivity.this, "Halaman Checkout sedang dibangun!", Toast.LENGTH_SHORT).show();
         });
     }
 }

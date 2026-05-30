@@ -1,5 +1,6 @@
 package com.example.datamart;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,56 +9,92 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datamart.adapter.ProductAdapter;
+// WAJIB ADA: Baris ini untuk mengenalkan CartAdapter ke Fragment
+import com.example.datamart.adapter.CartAdapter;
 import com.example.datamart.db.DatabaseHelper;
-import com.example.datamart.model.Product;
 
-import java.util.List;
+public class CartFragment extends Fragment implements CartAdapter.OnCartChangeListener {
 
-public class CartFragment extends Fragment {
-
-    private RecyclerView rvCart;
-    private TextView tvEmptyCart;
+    private RecyclerView rvCartItems;
+    private TextView tvSubtotal, tvTotalPayment, tvStickyTotal;
     private DatabaseHelper dbHelper;
-    private ProductAdapter cartAdapter;
+    private CartAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Menghubungkan ke layout fragment_cart.xml Lumina
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        rvCart = view.findViewById(R.id.rvCart);
-        tvEmptyCart = view.findViewById(R.id.tvEmptyCart);
+        // 1. Inisialisasi Komponen UI berdasarkan ID XML yang benar
+        rvCartItems = view.findViewById(R.id.rvCartItems);
+        tvSubtotal = view.findViewById(R.id.tvSubtotalPrice);
+        tvTotalPayment = view.findViewById(R.id.tvTotalPaymentPrice);
+        tvStickyTotal = view.findViewById(R.id.tvStickyTotalPrice);
 
-        // Kita gunakan bentuk kotak-kotak (Grid) seperti di halaman utama
-        rvCart.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-        // Panggil database SQLite
         dbHelper = new DatabaseHelper(getContext());
 
-        // Ambil semua barang dari dalam database
-        loadCartData();
+        // 2. Setup RecyclerView dan Pasang Adapter dengan 3 Argumen yang Sesuai
+        if (rvCartItems != null) {
+            rvCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
+            Cursor cursor = dbHelper.getCartItems(); // Menggunakan nama fungsi getCartItems() dari DatabaseHelper
+            adapter = new CartAdapter(getContext(), cursor, this);
+            rvCartItems.setAdapter(adapter);
+        }
+
+        // 3. Hitung total belanjaan pertama kali saat halaman dibuka
+        calculateTotal();
 
         return view;
     }
 
-    private void loadCartData() {
-        List<Product> cartItems = dbHelper.getAllCartItems();
+    // Fungsi otomatis berjalan jika ada item yang dihapus dari keranjang belanja
+    @Override
+    public void onCartChanged() {
+        calculateTotal();
+    }
 
-        if (cartItems.isEmpty()) {
-            // Jika keranjang kosong, tampilkan teks pemberitahuan
-            tvEmptyCart.setVisibility(View.VISIBLE);
-            rvCart.setVisibility(View.GONE);
-        } else {
-            // Jika ada isinya, masukkan ke adapter untuk ditampilkan
-            tvEmptyCart.setVisibility(View.GONE);
-            rvCart.setVisibility(View.VISIBLE);
+    // Logika Hitung Otomatis Total Belanjaan dari SQLite
+    private void calculateTotal() {
+        if (dbHelper == null) return;
 
-            cartAdapter = new ProductAdapter(cartItems);
-            rvCart.setAdapter(cartAdapter);
+        Cursor cursor = dbHelper.getCartItems();
+        long subtotal = 0;
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String priceStr = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PRICE));
+                int qty = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_QUANTITY));
+
+                // Membersihkan simbol mata uang agar bisa dihitung secara matematis
+                String cleanPrice = priceStr.replaceAll("[^0-9]", "");
+                if (!cleanPrice.isEmpty()) {
+                    subtotal += (Long.parseLong(cleanPrice) * qty);
+                }
+            }
+            cursor.close();
+        }
+
+        // Ditambah Ongkir (25rb) dikurang Diskon (50rb) sesuai rincian ringkasan pesanan Lumina
+        long totalPayment = subtotal + 25000 - 50000;
+        if (totalPayment < 0 || subtotal == 0) totalPayment = 0;
+
+        // Set nilai teks ke layar handphone
+        if (tvSubtotal != null) tvSubtotal.setText("Rp " + String.format("%,d", subtotal).replace(',', '.'));
+        if (tvTotalPayment != null) tvTotalPayment.setText("Rp " + String.format("%,d", totalPayment).replace(',', '.'));
+        if (tvStickyTotal != null) tvStickyTotal.setText("Rp " + String.format("%,d", totalPayment).replace(',', '.'));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Memastikan isi keranjang langsung ter-refresh otomatis saat user kembali ke halaman ini
+        if (adapter != null && dbHelper != null) {
+            adapter.swapCursor(dbHelper.getCartItems());
+            calculateTotal();
         }
     }
 }

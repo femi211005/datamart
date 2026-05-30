@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datamart.R;
 import com.example.datamart.adapter.CategoryAdapter;
 import com.example.datamart.adapter.ProductAdapter;
 import com.example.datamart.api.ApiClient;
@@ -69,7 +68,7 @@ public class HomeFragment extends Fragment {
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // --- FITUR SYARAT 7: DARK MODE DENGAN SHAREDPREFERENCES ---
+        // --- FITUR DARK MODE DENGAN SHAREDPREFERENCES ---
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("TemaApp", Context.MODE_PRIVATE);
         boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
         switchTheme.setChecked(isDarkMode);
@@ -85,7 +84,6 @@ public class HomeFragment extends Fragment {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         });
-        // ------------------------------------------------------------
 
         // 3. Logika Tombol Refresh
         btnRefresh.setOnClickListener(v -> loadData());
@@ -117,18 +115,17 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     categoryList = response.body().getData();
 
-                    categoryAdapter = new CategoryAdapter(categoryList, category -> {
-                        fetchProducts(category.getName());
-                    });
+                    // Menggunakan 2 argumen: Context dan List sesuai dengan CategoryAdapter milikmu
+                    categoryAdapter = new CategoryAdapter(getContext(), categoryList);
                     rvCategories.setAdapter(categoryAdapter);
 
                     if (!categoryList.isEmpty()) {
+                        // Memanggil getName() dari model CategoryItem-mu
                         fetchProducts(categoryList.get(0).getName());
                     } else {
                         progressBar.setVisibility(View.GONE);
                     }
                 } else {
-                    // PERBAIKAN: Hentikan loading dan tampilkan error jika API menolak
                     progressBar.setVisibility(View.GONE);
                     layoutError.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), "Gagal terhubung ke Amazon. Cek API Key.", Toast.LENGTH_SHORT).show();
@@ -152,10 +149,12 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<AmazonResponse> call, Response<AmazonResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                    productAdapter = new ProductAdapter(response.body().getData().getProducts());
+
+                    // Menggunakan 2 argumen: Context dan List sesuai ProductAdapter milikmu
+                    productAdapter = new ProductAdapter(getContext(), response.body().getData().getProducts());
                     rvProducts.setAdapter(productAdapter);
+
                 } else {
-                    // PERBAIKAN: Tangani error saat memuat detail produk
                     layoutError.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), "Gagal memuat produk. Cek API Key.", Toast.LENGTH_SHORT).show();
                 }
@@ -170,7 +169,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    // Fungsi untuk mengecek apakah HP tersambung ke internet
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

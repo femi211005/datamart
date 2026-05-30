@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.datamart.R;
-import com.example.datamart.model.Review; // Sesuaikan dengan nama model review-mu
+import com.example.datamart.model.ReviewItem; // Menggunakan file asli milikmu
 
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private final Context context;
-    private final List<Review> reviewList;
+    private final List<ReviewItem> reviewList; // Menggunakan ReviewItem
 
-    public ReviewAdapter(Context context, List<Review> reviewList) {
+    public ReviewAdapter(Context context, List<ReviewItem> reviewList) {
         this.context = context;
         this.reviewList = reviewList;
     }
@@ -33,13 +33,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        Review review = reviewList.get(position);
+        ReviewItem review = reviewList.get(position);
 
+        // Menampilkan data ulasan dari Amazon menggunakan file asli milikmu
         holder.tvReviewerName.setText(review.getReviewerName());
         holder.tvReviewComment.setText(review.getReviewDescription());
         holder.tvReviewRating.setText("Rating: " + review.getReviewRating());
 
-        // Load foto profil pengulas jika disediakan oleh API Amazon
         Glide.with(context)
                 .load(review.getReviewerImage())
                 .placeholder(android.R.drawable.ic_menu_gallery)
