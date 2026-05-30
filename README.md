@@ -1,32 +1,32 @@
 # Lumina Commerce 🛍️
 
-A native Android e-commerce application built as the Final Project for Mobile Lab 2026. Lumina Commerce offers a modern, seamless shopping experience with real-time data integration, dynamic theming, and an intuitive user interface.
+Aplikasi *e-commerce* Android *native* yang dibangun sebagai Tugas Akhir untuk Mobile Lab 2026. Lumina Commerce menawarkan pengalaman belanja yang modern dan mulus dengan integrasi data *real-time*, tema dinamis, dan antarmuka pengguna yang intuitif.
 
-## 📱 About The Project
-This application was developed to fulfill the final project requirements for the Mobile Development Lab at the Information Systems Study Program, Hasanuddin University. It demonstrates practical implementation of native Android development concepts, including API consumption, state management, and Material Design guidelines.
+## 📱 Tentang Proyek
+Aplikasi ini dikembangkan untuk memenuhi tugas akhir praktikum Mobile Development di Program Studi Sistem Informasi, Universitas Hasanuddin. Proyek ini mendemonstrasikan implementasi praktis dari konsep pengembangan Android *native*, termasuk konsumsi API, manajemen perpindahan halaman, dan penerapan standar desain Material Design.
 
-## ✨ Key Features
-* **Authentication Flow:** Seamless Login and Registration pages with robust input validation.
-* **Real-Time Product Data:** Integration with the Amazon API (via Retrofit) to fetch and display live categories and products.
-* **Dynamic Theming:** Dark Mode and Light Mode support, persistently saved using `SharedPreferences`.
-* **Intuitive Navigation:** Smooth transitions between fragments (Home, Cart, Categories, Settings) using `BottomNavigationView`.
-* **Modern UI/UX:** Clean and responsive interface utilizing Material Design Components (MaterialCardView, TextInputLayout, MaterialButton).
+## ✨ Fitur Utama
+* **Alur Autentikasi:** Halaman Login dan Registrasi dengan validasi *input* data yang rapi.
+* **Data Produk Real-Time:** Integrasi dengan Amazon API (melalui Retrofit) untuk mengambil dan menampilkan daftar kategori serta produk secara langsung.
+* **Tema Dinamis:** Dukungan Mode Gelap (*Dark Mode*) dan Mode Terang (*Light Mode*) yang preferensinya disimpan secara permanen menggunakan `SharedPreferences`.
+* **Navigasi Intuitif:** Transisi yang halus antar-*fragment* (Beranda, Pesanan, Kategori, Pengaturan) menggunakan `BottomNavigationView`.
+* **UI/UX Modern:** Antarmuka yang bersih dan responsif menggunakan *Material Design Components* (MaterialCardView, TextInputLayout, MaterialButton).
 
-## 🛠️ Tech Stack
-* **Language:** Java, XML
+## 🛠️ Teknologi yang Digunakan
+* **Bahasa Pemrograman:** Java, XML
 * **IDE:** Android Studio
-* **Networking:** [Retrofit2](https://square.github.io/retrofit/) & Gson (for API requests and JSON parsing)
-* **Local Storage:** SharedPreferences
-* **Architecture:** Activity-Fragment based UI
+* **Networking:** [Retrofit2](https://square.github.io/retrofit/) & Gson (untuk pemanggilan API dan *parsing* JSON)
+* **Penyimpanan Lokal:** SharedPreferences
+* **Arsitektur:** UI berbasis *Activity* dan *Fragment*
 
-## 🚀 Getting Started
+## 🚀 Panduan Memulai
 
-### Prerequisites
-* Android Studio (latest version recommended)
+### Prasyarat
+* Android Studio (disarankan menggunakan versi terbaru)
 * Minimum SDK: API 24 (Android 7.0)
-* Active Internet Connection (for API fetching)
+* Koneksi Internet Aktif (wajib untuk memuat data API)
 
-### Installation
-1. Clone the repository:
+### Instalasi
+1. *Clone* repositori ini:
    ```bash
-   git clone [https://github.com/username/Lumina-Commerce.git](https://github.com/username/Lumina-Commerce.git)
+   git clone [https://github.com/femi211005/datamart.git](https://github.com/femi211005/datamart.git)
