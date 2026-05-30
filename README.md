@@ -1,5 +1,3 @@
-# datamart
-
 # Lumina Commerce 🛍️
 
 A native Android e-commerce application built as the Final Project for Mobile Lab 2026. Lumina Commerce offers a modern, seamless shopping experience with real-time data integration, dynamic theming, and an intuitive user interface.
