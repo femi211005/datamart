@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.datamart.DetailActivity;
 import com.example.datamart.R;
-import com.example.datamart.model.Product; // Sesuaikan jika nama kelas modelmu berbeda
+import com.example.datamart.model.Product;
 
 import java.util.List;
 
@@ -38,27 +38,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
 
-        // Set teks nama produk
-        holder.tvProductTitle.setText(product.getProductTitle());
+        // 1. Set teks nama produk dengan validasi aman
+        holder.tvProductTitle.setText(product.getProductTitle() != null ? product.getProductTitle() : "Produk Tanpa Nama");
 
-        // Set teks harga produk (menggunakan data mentah dari API Amazon)
-        holder.tvProductPrice.setText(product.getProductPrice());
+        // 2. Set teks harga produk
+        holder.tvProductPrice.setText(product.getProductPrice() != null ? product.getProductPrice() : "Harga tidak tersedia");
 
-        // Set teks rating dan total ulasan jika ada
-        if (product.getProductStarRating() != null) {
+        // 3. Set teks rating dan total ulasan (Cek berdasarkan angka 0 karena tipe datanya int)
+        if (product.getProductNumOfReviews() == 0) {
+            holder.tvProductRating.setText("Belum ada ulasan");
+        } else {
             holder.tvProductRating.setText(product.getProductStarRating() + " (" + product.getProductNumOfReviews() + ")");
         }
 
-        // Tampilkan gambar produk dari internet menggunakan Glide
+        // 4. Tampilkan gambar produk dari internet menggunakan Glide
         Glide.with(context)
                 .load(product.getProductPhoto())
-                .placeholder(android.R.drawable.ic_menu_gallery)
+                .placeholder(android.R.drawable.ic_menu_gallery) // Gambar sementara saat proses muat
+                .error(android.R.drawable.ic_menu_report_image) // Gambar jika URL gagal dimuat/error
                 .into(holder.ivProductImage);
 
-        // Alur UX: Jika kotak produk diklik, lompat ke halaman Detail Produk
+        // 5. Alur UX: Lompat ke halaman Detail Produk
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
-            // Mengirim data produk terpilih ke DetailActivity agar tampilannya dinamis
+            // Mengirim data ke DetailActivity
             intent.putExtra("PRODUCT_ASIN", product.getAsin());
             intent.putExtra("PRODUCT_TITLE", product.getProductTitle());
             intent.putExtra("PRODUCT_PRICE", product.getProductPrice());

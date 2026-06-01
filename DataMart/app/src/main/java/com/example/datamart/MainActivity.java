@@ -43,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.menu_pesanan) {
                 selectedFragment = new CartFragment();
             } else if (itemId == R.id.menu_kategori) {
-                Toast.makeText(MainActivity.this, "Halaman Kategori sedang dibangun", Toast.LENGTH_SHORT).show();
+                // SEKARANG MEMBUKA HALAMAN KATEGORI
+                selectedFragment = new CategoryFragment();
             } else if (itemId == R.id.menu_pengaturan) {
-                Toast.makeText(MainActivity.this, "Halaman Pengaturan sedang dibangun", Toast.LENGTH_SHORT).show();
+                // SEKARANG MEMBUKA HALAMAN PENGATURAN
+                selectedFragment = new SettingsFragment();
             }
 
             if (selectedFragment != null) {

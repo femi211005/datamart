@@ -1,6 +1,7 @@
 package com.example.datamart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +15,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Menghubungkan ID dari activity_login.xml
+        // Menghubungkan ID dari XML
         TextInputEditText etEmail = findViewById(R.id.etEmailLogin);
         TextInputEditText etPassword = findViewById(R.id.etPasswordLogin);
         MaterialButton btnLogin = findViewById(R.id.btnLogin);
@@ -22,17 +23,27 @@ public class LoginActivity extends AppCompatActivity {
 
         // Aksi ketika tombol Masuk diklik
         btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText() != null ? etEmail.getText().toString() : "";
-            String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
+            String emailInput = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+            String passwordInput = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
 
-            if (email.isEmpty() || password.isEmpty()) {
+            // BUKA BRANKAS UNTUK MENGAMBIL DATA
+            SharedPreferences userPrefs = getSharedPreferences("AkunApp", MODE_PRIVATE);
+            String savedEmail = userPrefs.getString("email", "");
+            String savedPassword = userPrefs.getString("password", "");
+
+            if (emailInput.isEmpty() || passwordInput.isEmpty()) {
                 Toast.makeText(this, "Email dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            // COCOKKAN DATA INPUT DENGAN BRANKAS
+            else if (emailInput.equals(savedEmail) && passwordInput.equals(savedPassword)) {
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
-                // Berpindah ke MainActivity (Beranda)
+
+                // Pindah ke Beranda
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish(); // Menutup halaman login agar tidak kembali saat ditekan 'Back'
+                finish();
+            } else {
+                Toast.makeText(this, "Email atau Password salah! (Atau akun belum didaftarkan)", Toast.LENGTH_SHORT).show();
             }
         });
 

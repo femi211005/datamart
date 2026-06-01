@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_light">
 
-    <!-- 1. TOP APP BAR (Sticky di Atas) -->
     <LinearLayout
         android:id="@+id/topBarCheckout"
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/btnBackCheckout"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -47,7 +47,6 @@
             app:tint="@color/lumina_blue" />
     </LinearLayout>
 
-    <!-- 2. SCROLLABLE CONTENT AREA -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -61,7 +60,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- BAGIAN 1: ALAMAT PENGIRIMAN -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,6 +117,7 @@
                         android:layout_marginStart="14dp"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/tvCheckoutName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Budi Santoso"
@@ -143,7 +142,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- BAGIAN 2: RINGKASAN PESANAN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,7 +221,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- BAGIAN 3: METODE PENGIRIMAN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,7 +230,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- Row Horizontal Opsi Kurir -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -241,7 +237,6 @@
                 android:weightSum="3"
                 android:layout_marginBottom="24dp">
 
-                <!-- Opsi 1: Regular (Selected) -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="80dp"
@@ -264,7 +259,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Opsi 2: Express -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="80dp"
@@ -287,7 +281,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Opsi 3: Instant -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="80dp"
@@ -311,7 +304,6 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- BAGIAN 4: METODE PEMBAYARAN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -321,8 +313,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- List Vertikal Metode Pembayaran -->
-            <!-- 1. Bank Transfer (Selected) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -364,7 +354,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 2. Credit Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -406,7 +395,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 3. E-Wallet -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -448,7 +436,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- DETAIL RANCANGAN BREAKDOWN HARGA -->
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Subtotal (1 item)" android:textColor="@color/text_secondary"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Rp1.299.000" android:textColor="@color/text_primary" android:textStyle="bold"/>
@@ -464,7 +451,6 @@
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="16dp" />
 
-            <!-- Total Pembayaran Besar -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -490,7 +476,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- 3. ACTION BUTTON BAR + NAV MOCK (Sticky di Bawah) -->
     <LinearLayout
         android:id="@+id/bottomBarCheckoutAction"
         android:layout_width="match_parent"
@@ -500,7 +485,6 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Tombol Bayar Sekarang -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPayNow"
             android:layout_width="match_parent"
@@ -513,7 +497,6 @@
             app:backgroundTint="@color/lumina_blue"
             app:cornerRadius="27dp" />
 
-        <!-- Mockup Bottom Navigation Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"

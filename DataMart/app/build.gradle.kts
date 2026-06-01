@@ -49,4 +49,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     // Mesin Glide untuk memuat gambar dari URL (dibutuhkan untuk daftar produk nanti)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
 }
