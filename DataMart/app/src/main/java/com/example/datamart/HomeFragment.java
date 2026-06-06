@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +23,7 @@ import com.example.datamart.api.ApiService;
 import com.example.datamart.model.AmazonResponse;
 import com.example.datamart.model.CategoryItem;
 import com.example.datamart.model.CategoryResponse;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,10 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
-    // Hanya menggunakan ID yang benar-benar ADA di desain aslimu
-    private RecyclerView rvCategories, rvProducts, rvReviews;
-    private ImageButton btnCart, btnNotification;
+    // 1. Sesuaikan nama variabel dengan elemen di XML yang baru
+    private RecyclerView rvHomeCategories, rvHomeProducts, rvBestReviews;
+    private FrameLayout flNotification;
+    private MaterialCardView cvSearchBar;
 
     private ApiService apiService;
     private CategoryAdapter categoryAdapter;
@@ -46,24 +48,28 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // 1. Hubungkan variabel dengan ID persis seperti di XML-mu
-        rvCategories = view.findViewById(R.id.rvCategories);
-        rvProducts = view.findViewById(R.id.rvProducts);
-        rvReviews = view.findViewById(R.id.rvReviews);
-        btnCart = view.findViewById(R.id.btnCart);
-        btnNotification = view.findViewById(R.id.btnNotification);
+        // 2. Hubungkan variabel dengan ID BARU persis seperti di XML
+        rvHomeCategories = view.findViewById(R.id.rvHomeCategories);
+        rvHomeProducts = view.findViewById(R.id.rvHomeProducts);
+        rvBestReviews = view.findViewById(R.id.rvBestReviews);
+        flNotification = view.findViewById(R.id.flNotification);
+        cvSearchBar = view.findViewById(R.id.cvSearchBar);
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // 2. Atur bentuk daftar
-        if (rvCategories != null) {
-            rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // 3. Atur bentuk daftar
+        if (rvHomeCategories != null) {
+            rvHomeCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
-        if (rvProducts != null) {
-            rvProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        if (rvHomeProducts != null) {
+            // Menggunakan GridLayout dengan 2 kolom untuk produk
+            rvHomeProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        }
+        if (rvBestReviews != null) {
+            rvBestReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
 
-        // 3. Cek internet lalu muat data API
+        // 4. Cek internet lalu muat data API
         if (isNetworkAvailable()) {
             fetchCategories();
         } else {
@@ -80,11 +86,12 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     categoryList = response.body().getData();
 
-                    if (rvCategories != null) {
+                    if (rvHomeCategories != null) {
                         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
-                        rvCategories.setAdapter(categoryAdapter);
+                        rvHomeCategories.setAdapter(categoryAdapter);
                     }
 
+                    // Muat produk berdasarkan kategori pertama yang didapat
                     if (!categoryList.isEmpty()) {
                         fetchProducts(categoryList.get(0).getName());
                     }
@@ -106,9 +113,9 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<AmazonResponse> call, Response<AmazonResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
 
-                    if (rvProducts != null) {
+                    if (rvHomeProducts != null) {
                         productAdapter = new ProductAdapter(getContext(), response.body().getData().getProducts());
-                        rvProducts.setAdapter(productAdapter);
+                        rvHomeProducts.setAdapter(productAdapter);
                     }
 
                 } else {

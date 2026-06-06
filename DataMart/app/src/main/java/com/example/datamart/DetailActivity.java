@@ -16,7 +16,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private ImageView ivProductMain;
     private TextView tvDetailProductName, tvProductPrice;
-    private ImageButton btnAddToCartSmall;
+    private ImageButton btnAddToCartSmall, btnBackDetail;
     private MaterialButton btnOrderNow;
 
     private DatabaseHelper dbHelper;
@@ -27,6 +27,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Menghubungkan dengan layout XML
         setContentView(R.layout.activity_detail_product);
 
         // 1. Inisialisasi Database dan View
@@ -38,6 +39,9 @@ public class DetailActivity extends AppCompatActivity {
         btnAddToCartSmall = findViewById(R.id.btnAddToCartSmall);
         btnOrderNow = findViewById(R.id.btnOrderNow);
 
+        // Mengaitkan tombol kembali yang sudah ada di XML
+        btnBackDetail = findViewById(R.id.btnBackDetail);
+
         // 2. Tangkap Data Intent dari ProductAdapter
         Intent intent = getIntent();
         if (intent != null) {
@@ -47,34 +51,53 @@ public class DetailActivity extends AppCompatActivity {
             productImage = intent.getStringExtra("PRODUCT_IMAGE");
 
             // 3. Pasang Data ke Tampilan
-            tvDetailProductName.setText(productTitle);
-            if (tvProductPrice != null) {
+            if (productTitle != null) {
+                tvDetailProductName.setText(productTitle);
+            }
+            if (tvProductPrice != null && productPrice != null) {
                 tvProductPrice.setText(productPrice);
             }
 
             // Tampilkan gambar asli produk dari Amazon menggunakan Glide
-            Glide.with(this)
-                    .load(productImage)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .into(ivProductMain);
+            if (productImage != null) {
+                Glide.with(this)
+                        .load(productImage)
+                        .placeholder(android.R.drawable.ic_menu_gallery)
+                        .into(ivProductMain);
+            }
         }
 
-        // 4. LOGIKA TOMBOL MASUKKAN KERANJANG (SQLite)
-        btnAddToCartSmall.setOnClickListener(v -> {
-            if (productAsin != null) {
-                boolean isSuccess = dbHelper.addToCart(productAsin, productTitle, productPrice, productImage, 1);
-                if (isSuccess) {
-                    Toast.makeText(DetailActivity.this, "Berhasil ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(DetailActivity.this, "Gagal menambahkan ke keranjang", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // 4. LOGIKA TOMBOL KEMBALI
+        if (btnBackDetail != null) {
+            btnBackDetail.setOnClickListener(v -> finish());
+        }
 
-        // 5. LOGIKA TOMBOL PESAN SEKARANG
-        // (CheckoutActivity dimatikan sementara agar tidak error merah)
-        btnOrderNow.setOnClickListener(v -> {
-            Toast.makeText(DetailActivity.this, "Halaman Checkout sedang dibangun!", Toast.LENGTH_SHORT).show();
-        });
+        // 5. LOGIKA TOMBOL MASUKKAN KERANJANG (SQLite)
+        if (btnAddToCartSmall != null) {
+            btnAddToCartSmall.setOnClickListener(v -> {
+                if (productAsin != null) {
+                    boolean isSuccess = dbHelper.addToCart(productAsin, productTitle, productPrice, productImage, 1);
+                    if (isSuccess) {
+                        Toast.makeText(DetailActivity.this, "Berhasil ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(DetailActivity.this, "Gagal menambahkan ke keranjang", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(DetailActivity.this, "Data produk belum siap", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // 6. LOGIKA TOMBOL PESAN SEKARANG (Lanjut ke Checkout)
+        if (btnOrderNow != null) {
+            btnOrderNow.setOnClickListener(v -> {
+                Intent checkoutIntent = new Intent(DetailActivity.this, CheckoutActivity.class);
+                // Bawa data produk ini agar CheckoutActivity bisa menampilkannya secara dinamis
+                checkoutIntent.putExtra("CHECKOUT_TITLE", productTitle);
+                checkoutIntent.putExtra("CHECKOUT_PRICE", productPrice);
+                checkoutIntent.putExtra("CHECKOUT_IMAGE", productImage);
+                startActivity(checkoutIntent);
+            });
+        }
     }
 }

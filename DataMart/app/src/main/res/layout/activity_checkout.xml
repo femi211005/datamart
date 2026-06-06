@@ -120,7 +120,7 @@
                             android:id="@+id/tvCheckoutName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Budi Santoso"
+                            android:text="Geby"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
                             android:textSize="14sp" />
@@ -172,6 +172,7 @@
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp">
                         <ImageView
+                            android:id="@+id/ivCheckoutProduct"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -185,9 +186,10 @@
                         android:layout_toEndOf="@id/cvImgProduct"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/tvCheckoutProductName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Red Velocity V2"
+                            android:text="Memuat nama produk..."
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
                             android:textSize="14sp" />
@@ -195,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Size: 42 | Warna: Crimson Red"
+                            android:text="Size: Default | Warna: Original"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                         <RelativeLayout
@@ -203,9 +205,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp">
                             <TextView
+                                android:id="@+id/tvCheckoutProductPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rp1.299.000"
+                                android:text="Memuat harga..."
                                 android:textColor="@color/lumina_blue"
                                 android:textStyle="bold"
                                 android:textSize="16sp" />
@@ -438,15 +441,15 @@
 
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Subtotal (1 item)" android:textColor="@color/text_secondary"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Rp1.299.000" android:textColor="@color/text_primary" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Sesuai Harga" android:textColor="@color/text_primary" android:textStyle="bold"/>
             </RelativeLayout>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Biaya Pengiriman" android:textColor="@color/text_secondary"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Rp25.000" android:textColor="@color/text_primary" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Gratis" android:textColor="@color/text_primary" android:textStyle="bold"/>
             </RelativeLayout>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Diskon Promo" android:textColor="@color/text_secondary"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="- Rp50.000" android:textColor="#388E3C" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="- Rp0" android:textColor="#388E3C" android:textStyle="bold"/>
             </RelativeLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="16dp" />
@@ -463,13 +466,14 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/tvCheckoutTotalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="Rp1.274.000"
+                    android:text="Memuat..."
                     android:textColor="@color/lumina_blue"
-                    android:textSize="26sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -496,17 +500,6 @@
             android:textStyle="bold"
             app:backgroundTint="@color/lumina_blue"
             app:cornerRadius="27dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Beranda" android:textColor="@color/text_secondary" android:textSize="10sp" />
-            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Kategori" android:textColor="@color/text_secondary" android:textSize="10sp" />
-            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Pesanan" android:textColor="@color/lumina_blue" android:textSize="10sp" android:textStyle="bold" />
-            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Pengaturan" android:textColor="@color/text_secondary" android:textSize="10sp" />
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

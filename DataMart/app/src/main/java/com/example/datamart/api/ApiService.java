@@ -9,8 +9,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface ApiService {
-
-    // 1. Endpoint untuk memunculkan menu Kategori
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
             "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"
@@ -19,8 +17,6 @@ public interface ApiService {
     Call<CategoryResponse> getCategories(
             @Query("country") String country
     );
-
-    // 2. Endpoint Pencarian Produk (Sekarang sudah membawa Kunci!)
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
             "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"
@@ -32,8 +28,6 @@ public interface ApiService {
             @Query("country") String country,
             @Query("sort_by") String sortBy
     );
-
-    // 3. Endpoint Ulasan Produk Terbaik (Sekarang sudah membawa Kunci!)
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
             "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"

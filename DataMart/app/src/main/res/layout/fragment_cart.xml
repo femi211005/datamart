@@ -47,7 +47,7 @@
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomCheckoutBar"
-        app:layout_constraintTop_toBottomOf="@id/headerCart">
+        app:layout_constraintTop_toBottomOf="@+id/headerCart">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_dashed_promo"
+                android:background="#F4F8FF"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -90,12 +90,6 @@
                         android:textColor="@color/lumina_blue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@android:drawable/ic_media_play"
-                        app:tint="@color/text_secondary" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -108,8 +102,7 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_banner_gradient"
-                        android:backgroundTint="@color/white"
+                        android:background="@color/white"
                         android:hint="Masukkan kode promo..."
                         android:paddingHorizontal="12dp"
                         android:textSize="14sp" />
@@ -142,7 +135,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Subtotal (2 produk)"
+                    android:text="Subtotal"
                     android:textColor="@color/text_secondary" />
 
                 <TextView
@@ -150,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Rp 4.749.000"
+                    android:text="Rp 0"
                     android:textColor="@color/text_primary" />
             </RelativeLayout>
 
@@ -164,10 +157,11 @@
                     android:text="Biaya Pengiriman"
                     android:textColor="@color/text_secondary" />
                 <TextView
+                    android:id="@+id/tvShippingPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Rp 25.000"
+                    android:text="Rp 0"
                     android:textColor="@color/text_primary" />
             </RelativeLayout>
 
@@ -181,10 +175,11 @@
                     android:text="Diskon Promo"
                     android:textColor="@color/text_secondary" />
                 <TextView
+                    android:id="@+id/tvDiscountPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="- Rp 50.000"
+                    android:text="- Rp 0"
                     android:textColor="#388E3C"
                     android:textStyle="bold" />
             </RelativeLayout>
@@ -211,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Rp 4.724.000"
+                    android:text="Rp 0"
                     android:textColor="@color/lumina_blue"
                     android:textStyle="bold" />
             </RelativeLayout>
@@ -248,7 +243,7 @@
                 android:id="@+id/tvStickyTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rp 4.724.000"
+                android:text="Rp 0"
                 android:textColor="@color/lumina_blue"
                 android:textSize="20sp"
                 android:textStyle="bold" />

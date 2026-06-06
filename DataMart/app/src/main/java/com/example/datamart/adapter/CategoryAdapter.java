@@ -6,17 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.datamart.R;
-import com.example.datamart.model.CategoryItem; // Menggunakan file asli milikmu
+import com.example.datamart.model.CategoryItem;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private final Context context;
-    private final List<CategoryItem> categoryList; // Menggunakan CategoryItem
+    private final List<CategoryItem> categoryList;
 
     public CategoryAdapter(Context context, List<CategoryItem> categoryList) {
         this.context = context;
@@ -34,12 +35,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         CategoryItem category = categoryList.get(position);
 
-        // Menampilkan nama kategori dari Amazon
-        // Catatan: Jika di file CategoryItem.java milikmu nama fungsinya bervariasi,
-        // kamu bisa sesuaikan antara getName() atau getCategoryName()
-        holder.tvCategoryName.setText(category.getName());
+        if (category.getName() != null) {
+            holder.tvCategoryName.setText(category.getName());
+        } else {
+            holder.tvCategoryName.setText("Kategori");
+        }
 
         holder.ivCategoryIcon.setImageResource(android.R.drawable.ic_menu_gallery);
+
+        holder.itemView.setOnClickListener(v -> {
+            Toast.makeText(context, "Membuka: " + category.getName(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

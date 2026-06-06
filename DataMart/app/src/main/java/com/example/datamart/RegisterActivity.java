@@ -3,7 +3,6 @@ package com.example.datamart;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,15 +15,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Menghubungkan ID dari XML
-        TextInputEditText etName = findViewById(R.id.etNameReg);
-        TextInputEditText etEmail = findViewById(R.id.etEmailReg);
-        TextInputEditText etPassword = findViewById(R.id.etPasswordReg);
+        TextInputEditText etName = findViewById(R.id.etNameRegister);
+        TextInputEditText etEmail = findViewById(R.id.etEmailRegister);
+        TextInputEditText etPassword = findViewById(R.id.etPasswordRegister);
         MaterialButton btnRegister = findViewById(R.id.btnRegister);
-        TextView tvLogin = findViewById(R.id.tvLogin);
-        CheckBox cbTerms = findViewById(R.id.cbTerms);
+        TextView tvGoToLogin = findViewById(R.id.tvGoToLogin);
 
-        // Aksi ketika tombol Daftar diklik
         btnRegister.setOnClickListener(v -> {
             String name = etName.getText() != null ? etName.getText().toString().trim() : "";
             String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
@@ -32,10 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Semua data wajib diisi!", Toast.LENGTH_SHORT).show();
-            } else if (!cbTerms.isChecked()) {
-                Toast.makeText(this, "Harap setujui Syarat & Ketentuan", Toast.LENGTH_SHORT).show();
             } else {
-                // SIMPAN DATA KE BRANKAS (SharedPreferences)
                 SharedPreferences userPrefs = getSharedPreferences("AkunApp", MODE_PRIVATE);
                 SharedPreferences.Editor editor = userPrefs.edit();
                 editor.putString("nama", name);
@@ -45,17 +38,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Registrasi Berhasil! Silakan Login.", Toast.LENGTH_SHORT).show();
 
-                // Kembali ke halaman Login
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
                 startActivity(intent);
                 finish();
             }
         });
-
-        // Aksi ketika teks "Masuk di sini" diklik
-        tvLogin.setOnClickListener(v -> {
+        tvGoToLogin.setOnClickListener(v -> {
             finish();
         });
     }
