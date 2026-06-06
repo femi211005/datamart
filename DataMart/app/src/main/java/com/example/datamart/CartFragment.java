@@ -1,11 +1,13 @@
 package com.example.datamart;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 // WAJIB ADA: Baris ini untuk mengenalkan CartAdapter ke Fragment
 import com.example.datamart.adapter.CartAdapter;
 import com.example.datamart.db.DatabaseHelper;
+import com.google.android.material.button.MaterialButton;
 
 public class CartFragment extends Fragment implements CartAdapter.OnCartChangeListener {
 
@@ -35,6 +38,9 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartChangeLi
         tvTotalPayment = view.findViewById(R.id.tvTotalPaymentPrice);
         tvStickyTotal = view.findViewById(R.id.tvStickyTotalPrice);
 
+        // Mengambil tombol Checkout yang baru kita beri ID di XML
+        MaterialButton btnCheckout = view.findViewById(R.id.btnCheckout);
+
         dbHelper = new DatabaseHelper(getContext());
 
         // 2. Setup RecyclerView dan Pasang Adapter dengan 3 Argumen yang Sesuai
@@ -47,6 +53,20 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartChangeLi
 
         // 3. Hitung total belanjaan pertama kali saat halaman dibuka
         calculateTotal();
+
+        // 4. LOGIKA TOMBOL CHECKOUT
+        if (btnCheckout != null) {
+            btnCheckout.setOnClickListener(v -> {
+                // Jangan biarkan pindah halaman kalau keranjangnya masih kosong
+                if (adapter == null || adapter.getItemCount() == 0) {
+                    Toast.makeText(getContext(), "Keranjang belanjamu masih kosong!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Beri perintah Intent untuk pindah ke CheckoutActivity
+                    Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         return view;
     }

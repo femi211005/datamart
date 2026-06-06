@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log; // Tambahan untuk sistem pelacak
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
-    // 1. Sesuaikan nama variabel dengan elemen di XML yang baru
     private RecyclerView rvHomeCategories, rvHomeProducts, rvBestReviews;
     private FrameLayout flNotification;
     private MaterialCardView cvSearchBar;
@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // 2. Hubungkan variabel dengan ID BARU persis seperti di XML
         rvHomeCategories = view.findViewById(R.id.rvHomeCategories);
         rvHomeProducts = view.findViewById(R.id.rvHomeProducts);
         rvBestReviews = view.findViewById(R.id.rvBestReviews);
@@ -57,19 +56,16 @@ public class HomeFragment extends Fragment {
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // 3. Atur bentuk daftar
         if (rvHomeCategories != null) {
             rvHomeCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
         if (rvHomeProducts != null) {
-            // Menggunakan GridLayout dengan 2 kolom untuk produk
             rvHomeProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
         if (rvBestReviews != null) {
             rvBestReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
 
-        // 4. Cek internet lalu muat data API
         if (isNetworkAvailable()) {
             fetchCategories();
         } else {
@@ -91,12 +87,13 @@ public class HomeFragment extends Fragment {
                         rvHomeCategories.setAdapter(categoryAdapter);
                     }
 
-                    // Muat produk berdasarkan kategori pertama yang didapat
                     if (!categoryList.isEmpty()) {
                         fetchProducts(categoryList.get(0).getName());
                     }
                 } else {
-                    Toast.makeText(getContext(), "Gagal terhubung ke Amazon. Cek API Key.", Toast.LENGTH_SHORT).show();
+                    // PERUBAHAN: Memunculkan KODE ERROR langsung ke layar HP
+                    Toast.makeText(getContext(), "Error Kategori: " + response.code(), Toast.LENGTH_LONG).show();
+                    Log.e("LUMINA_ERROR", "Kode Error Kategori dari Amazon: " + response.code());
                 }
             }
 
@@ -119,7 +116,9 @@ public class HomeFragment extends Fragment {
                     }
 
                 } else {
-                    Toast.makeText(getContext(), "Gagal memuat produk. Cek API Key.", Toast.LENGTH_SHORT).show();
+                    // PERUBAHAN: Memunculkan KODE ERROR langsung ke layar HP
+                    Toast.makeText(getContext(), "Error Produk: " + response.code(), Toast.LENGTH_LONG).show();
+                    Log.e("LUMINA_ERROR", "Kode Error Produk dari Amazon: " + response.code());
                 }
             }
 
@@ -130,7 +129,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    // Fungsi mengecek koneksi internet HP
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

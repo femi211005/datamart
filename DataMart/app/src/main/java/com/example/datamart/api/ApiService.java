@@ -11,15 +11,16 @@ import retrofit2.http.Query;
 public interface ApiService {
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
-            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"
+            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbap174aeejsne097138f9e88"
     })
     @GET("product-category-list")
     Call<CategoryResponse> getCategories(
             @Query("country") String country
     );
+
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
-            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"
+            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbap174aeejsne097138f9e88"
     })
     @GET("search")
     Call<AmazonResponse> searchProducts(
@@ -28,9 +29,10 @@ public interface ApiService {
             @Query("country") String country,
             @Query("sort_by") String sortBy
     );
+
     @Headers({
             "x-rapidapi-host: real-time-amazon-data.p.rapidapi.com",
-            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbab174aeejsne097138f9e88"
+            "x-rapidapi-key: 3601ed8feemsh5939c37f03eabbap174aeejsne097138f9e88"
     })
     @GET("top-product-reviews")
     Call<ReviewResponse> getProductReviews(
