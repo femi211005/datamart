@@ -4,11 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log; // Tambahan untuk sistem pelacak
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +27,6 @@ import com.example.datamart.api.ApiService;
 import com.example.datamart.model.AmazonResponse;
 import com.example.datamart.model.CategoryItem;
 import com.example.datamart.model.CategoryResponse;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,8 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private RecyclerView rvHomeCategories, rvHomeProducts, rvBestReviews;
-    private FrameLayout flNotification;
-    private MaterialCardView cvSearchBar;
+    private EditText etSearch;
+    private ImageView ivSearchIcon;
 
     private ApiService apiService;
     private CategoryAdapter categoryAdapter;
@@ -51,8 +53,10 @@ public class HomeFragment extends Fragment {
         rvHomeCategories = view.findViewById(R.id.rvHomeCategories);
         rvHomeProducts = view.findViewById(R.id.rvHomeProducts);
         rvBestReviews = view.findViewById(R.id.rvBestReviews);
-        flNotification = view.findViewById(R.id.flNotification);
-        cvSearchBar = view.findViewById(R.id.cvSearchBar);
+
+        // Menghubungkan variabel pencarian dengan ID di file XML
+        etSearch = view.findViewById(R.id.etSearch);
+        ivSearchIcon = view.findViewById(R.id.ivSearchIcon);
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
@@ -66,6 +70,22 @@ public class HomeFragment extends Fragment {
             rvBestReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
 
+        // ================= KABEL SENSOR PENCARIAN =================
+        if (etSearch != null && ivSearchIcon != null) {
+            // 1. Jika pengguna menekan ikon kaca pembesar
+            ivSearchIcon.setOnClickListener(v -> executeSearch());
+
+            // 2. Jika pengguna menekan tombol "Enter/Cari" di keyboard HP
+            etSearch.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    executeSearch();
+                    return true; // Menandakan bahwa aksi telah ditangani
+                }
+                return false;
+            });
+        }
+        // ==========================================================
+
         if (isNetworkAvailable()) {
             fetchCategories();
         } else {
@@ -73,6 +93,30 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
+    }
+
+    // Fungsi khusus untuk menjalankan pencarian produk
+    private void executeSearch() {
+        String keyword = etSearch.getText().toString().trim();
+        if (!keyword.isEmpty()) {
+            Toast.makeText(getContext(), "Mencari: " + keyword, Toast.LENGTH_SHORT).show();
+
+            // Memerintahkan API untuk mencari barang berdasarkan ketikan
+            fetchProducts(keyword);
+
+            // Menutup/menyembunyikan keyboard secara otomatis setelah pencarian ditekan
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+            }
+
+            // Mengosongkan kolom pencarian agar rapi kembali
+            etSearch.setText("");
+            etSearch.clearFocus();
+
+        } else {
+            Toast.makeText(getContext(), "Kolom pencarian tidak boleh kosong!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void fetchCategories() {
@@ -83,7 +127,10 @@ public class HomeFragment extends Fragment {
                     categoryList = response.body().getData();
 
                     if (rvHomeCategories != null) {
-                        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+                        categoryAdapter = new CategoryAdapter(getContext(), categoryList, categoryName -> {
+                            Toast.makeText(getContext(), "Memuat: " + categoryName, Toast.LENGTH_SHORT).show();
+                            fetchProducts(categoryName);
+                        });
                         rvHomeCategories.setAdapter(categoryAdapter);
                     }
 
@@ -91,9 +138,7 @@ public class HomeFragment extends Fragment {
                         fetchProducts(categoryList.get(0).getName());
                     }
                 } else {
-                    // PERUBAHAN: Memunculkan KODE ERROR langsung ke layar HP
-                    Toast.makeText(getContext(), "Error Kategori: " + response.code(), Toast.LENGTH_LONG).show();
-                    Log.e("LUMINA_ERROR", "Kode Error Kategori dari Amazon: " + response.code());
+                    Log.e("API_ERROR", "Error Kategori: " + response.code());
                 }
             }
 
@@ -109,22 +154,18 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<AmazonResponse> call, Response<AmazonResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-
                     if (rvHomeProducts != null) {
                         productAdapter = new ProductAdapter(getContext(), response.body().getData().getProducts());
                         rvHomeProducts.setAdapter(productAdapter);
                     }
-
                 } else {
-                    // PERUBAHAN: Memunculkan KODE ERROR langsung ke layar HP
-                    Toast.makeText(getContext(), "Error Produk: " + response.code(), Toast.LENGTH_LONG).show();
-                    Log.e("LUMINA_ERROR", "Kode Error Produk dari Amazon: " + response.code());
+                    Log.e("API_ERROR", "Error Produk: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<AmazonResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Koneksi terputus saat memuat produk.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Koneksi pencarian terputus.", Toast.LENGTH_SHORT).show();
             }
         });
     }

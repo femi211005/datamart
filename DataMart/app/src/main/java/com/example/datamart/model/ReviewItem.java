@@ -34,8 +34,6 @@ public class ReviewItem {
         return reviewerImage;
     }
 
-    // --- SETTER ---
-
     public void setReviewerName(String reviewerName) {
         this.reviewerName = reviewerName;
     }

@@ -40,17 +40,25 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp">
 
+                <!-- ID ivSearchIcon ditambahkan ke sini -->
                 <ImageView
+                    android:id="@+id/ivSearchIcon"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@android:drawable/ic_menu_search"
                     app:tint="@color/text_secondary" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- TextView diubah menjadi EditText dan diberi ID etSearch -->
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Cari produk favoritmu..."
+                    android:background="@null"
+                    android:hint="Cari produk favoritmu..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>

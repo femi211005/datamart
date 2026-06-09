@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.datamart.R;
-import com.example.datamart.model.ReviewItem; // Menggunakan file asli milikmu
+import com.example.datamart.model.ReviewItem;
 
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private final Context context;
-    private final List<ReviewItem> reviewList; // Menggunakan ReviewItem
+    private final List<ReviewItem> reviewList;
 
     public ReviewAdapter(Context context, List<ReviewItem> reviewList) {
         this.context = context;
@@ -35,7 +35,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         ReviewItem review = reviewList.get(position);
 
-        // Menampilkan data ulasan dari Amazon menggunakan file asli milikmu
         holder.tvReviewerName.setText(review.getReviewerName());
         holder.tvReviewComment.setText(review.getReviewDescription());
         holder.tvReviewRating.setText("Rating: " + review.getReviewRating());

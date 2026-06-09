@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datamart.adapter.ProductAdapter;
 import com.example.datamart.api.ApiClient;
 import com.example.datamart.api.ApiService;
 import com.example.datamart.model.CategoryResponse;
 import com.example.datamart.model.CategoryItem;
-import com.example.datamart.adapter.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import retrofit2.Response;
 public class CategoryFragment extends Fragment {
 
     private RecyclerView rvCategoryList;
-    private CategoryAdapter adapter;
+    private ProductAdapter.CategoryAdapter adapter;
     private List<CategoryItem> categoryList = new ArrayList<>();
 
     @Nullable
@@ -44,7 +44,7 @@ public class CategoryFragment extends Fragment {
             rvCategoryList.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
             // Inisialisasi Adapter dan pasangkan ke RecyclerView
-            adapter = new CategoryAdapter(getContext(), categoryList);
+            adapter = new ProductAdapter.CategoryAdapter(getContext(), categoryList);
             rvCategoryList.setAdapter(adapter);
         }
 

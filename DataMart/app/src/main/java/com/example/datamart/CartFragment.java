@@ -29,10 +29,9 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartChangeLi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Menghubungkan ke layout fragment_cart.xml Lumina
+
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        // 1. Inisialisasi Komponen UI berdasarkan ID XML yang benar
         rvCartItems = view.findViewById(R.id.rvCartItems);
         tvSubtotal = view.findViewById(R.id.tvSubtotalPrice);
         tvTotalPayment = view.findViewById(R.id.tvTotalPaymentPrice);

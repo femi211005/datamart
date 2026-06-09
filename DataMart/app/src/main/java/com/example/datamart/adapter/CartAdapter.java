@@ -21,7 +21,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private DatabaseHelper dbHelper;
     private OnCartChangeListener changeListener;
 
-    // Penghubung untuk memberitahu CartFragment jika ada perubahan harga
     public interface OnCartChangeListener {
         void onCartChanged();
     }
@@ -60,7 +59,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .into(holder.ivCartProduct);
 
-        // Jika tombol tempat sampah diklik
         holder.btnDeleteCart.setOnClickListener(v -> {
             dbHelper.deleteCartItem(asin);
             swapCursor(dbHelper.getCartItems()); // Refresh tampilan daftar
@@ -73,7 +71,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return cursor != null ? cursor.getCount() : 0;
     }
 
-    // Fungsi penting yang tadi dicari-cari oleh CartFragment dan gagal ditemukan
     public void swapCursor(Cursor newCursor) {
         if (cursor != null) cursor.close();
         cursor = newCursor;
