@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide; // Menggunakan Glide untuk memuat foto pengulas dari internet
+import com.bumptech.glide.Glide;
 import com.example.datamart.R;
 import com.example.datamart.model.ReviewItem;
 
@@ -28,7 +28,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Menyambungkan langsung dengan file item_review.xml asli milikmu
+        // Menyambungkan langsung dengan file layout item_review.xml milikmu
         View view = LayoutInflater.from(context).inflate(R.layout.item_review, parent, false);
         return new ReviewViewHolder(view);
     }
@@ -38,13 +38,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         ReviewItem review = reviewList.get(position);
 
         if (review != null) {
-            // 1. Set Nama Pengulas
+            // Mengambil nama dan komentar asli dari model (dengan fallback dinamis)
             holder.tvReviewerName.setText(review.getReviewerName());
-
-            // 2. Set Isi Komentar Ulasan
             holder.tvReviewComment.setText(review.getReviewDescription());
 
-            // 3. Set Rating Bintang Secara Dinamis (Konversi Angka ke Simbol Bintang)
+            // Set Rating Bintang Secara Dinamis berdasarkan String dari Amazon
             if (review.getReviewRating() != null) {
                 String ratingStr = review.getReviewRating();
                 if (ratingStr.contains("5")) {
@@ -58,19 +56,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 } else if (ratingStr.contains("1")) {
                     holder.tvReviewRating.setText("⭐");
                 } else {
-                    holder.tvReviewRating.setText("⭐⭐⭐⭐⭐"); // Default jika data berupa teks lain
+                    // Default fallback: ⭐⭐⭐⭐⭐ (jika API mengembalikan teks tak terduga)
+                    holder.tvReviewRating.setText("⭐⭐⭐⭐⭐");
                 }
             }
 
-            // 4. Set Foto Profil Pengulas Menggunakan Glide (Real-time dari Amazon)
+            // Muat Foto Profil Pengulas Menggunakan Glide secara Real-time
             if (review.getReviewerImage() != null && !review.getReviewerImage().isEmpty()) {
                 Glide.with(context)
                         .load(review.getReviewerImage())
-                        .placeholder(android.R.drawable.ic_menu_gallery) // Gambar sementara saat loading
-                        .error(android.R.drawable.ic_menu_gallery) // Gambar jika link error
+                        .placeholder(android.R.drawable.ic_menu_gallery)
+                        .error(android.R.drawable.ic_menu_gallery)
                         .into(holder.ivReviewerPhoto);
             } else {
-                // Jika pengulas tidak memasang foto, gunakan gambar default gallery bawaan android
                 holder.ivReviewerPhoto.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         }
@@ -85,10 +83,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         ImageView ivReviewerPhoto;
         TextView tvReviewerName, tvReviewRating, tvReviewComment;
 
-        // KODE YANG BENAR & AMAN:
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivReviewerPhoto = itemView.findViewById(R.id.ivReviewerPhoto); // <--- Sekarang sudah aman!
+            // Inisialisasi ID yang sesuai dengan XML item_review.xml
+            ivReviewerPhoto = itemView.findViewById(R.id.ivReviewerPhoto);
             tvReviewerName = itemView.findViewById(R.id.tvReviewerName);
             tvReviewRating = itemView.findViewById(R.id.tvReviewRating);
             tvReviewComment = itemView.findViewById(R.id.tvReviewComment);

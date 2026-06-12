@@ -17,8 +17,8 @@ import com.example.datamart.api.ApiClient;
 import com.example.datamart.api.ApiService;
 import com.example.datamart.db.DatabaseHelper;
 import com.example.datamart.model.ReviewResponse;
-import com.example.datamart.model.ReviewItem; // Sesuaikan dengan nama model item ulasanmu
-import com.example.datamart.adapter.ReviewAdapter; // Sesuaikan dengan nama adapter ulasanmu
+import com.example.datamart.model.ReviewItem;
+import com.example.datamart.adapter.ReviewAdapter;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
@@ -38,7 +38,6 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView rvProductReviews;
     private ReviewAdapter reviewAdapter;
 
-    // Variabel penampung data produk
     private String productAsin, productTitle, productPrice, productImage;
 
     @Override
@@ -46,7 +45,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
 
-        // 1. Inisialisasi Database, API Service, dan View
         dbHelper = new DatabaseHelper(this);
         apiService = ApiClient.getClient().create(ApiService.class);
 
@@ -57,13 +55,11 @@ public class DetailActivity extends AppCompatActivity {
         btnOrderNow = findViewById(R.id.btnOrderNow);
         btnBackDetail = findViewById(R.id.btnBackDetail);
 
-        // Inisialisasi RecyclerView Ulasan di Layout Detail
         rvProductReviews = findViewById(R.id.rvProductReviews);
         if (rvProductReviews != null) {
             rvProductReviews.setLayoutManager(new LinearLayoutManager(this));
         }
 
-        // 2. Tangkap Data Intent dari ProductAdapter
         Intent intent = getIntent();
         if (intent != null) {
             productAsin = intent.getStringExtra("PRODUCT_ASIN");
@@ -71,7 +67,6 @@ public class DetailActivity extends AppCompatActivity {
             productPrice = intent.getStringExtra("PRODUCT_PRICE");
             productImage = intent.getStringExtra("PRODUCT_IMAGE");
 
-            // 3. Pasang Data ke Tampilan
             if (productTitle != null) {
                 tvDetailProductName.setText(productTitle);
             }
@@ -86,18 +81,16 @@ public class DetailActivity extends AppCompatActivity {
                         .into(ivProductMain);
             }
 
-            // 4. JALANKAN AMBIL ULASAN JIKA ASIN TERSEDIA
+            // PANGGIL API ULASAN
             if (productAsin != null && !productAsin.isEmpty()) {
                 fetchProductReviews(productAsin);
             }
         }
 
-        // 5. LOGIKA TOMBOL KEMBALI
         if (btnBackDetail != null) {
             btnBackDetail.setOnClickListener(v -> finish());
         }
 
-        // 6. LOGIKA TOMBOL MASUKKAN KERANJANG (SQLite)
         if (btnAddToCartSmall != null) {
             btnAddToCartSmall.setOnClickListener(v -> {
                 if (productAsin != null) {
@@ -113,7 +106,6 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
 
-        // 7. LOGIKA TOMBOL PESAN SEKARANG
         if (btnOrderNow != null) {
             btnOrderNow.setOnClickListener(v -> {
                 Intent checkoutIntent = new Intent(DetailActivity.this, CheckoutActivity.class);
@@ -127,28 +119,31 @@ public class DetailActivity extends AppCompatActivity {
 
     // Fungsi mengambil ulasan asli dari endpoint Amazon
     private void fetchProductReviews(String asin) {
-        apiService.getProductReviews(asin, "US", "ALL_REVIEWS").enqueue(new Callback<ReviewResponse>() {
+        // PERBAIKAN: Gunakan "TOP_REVIEWS" agar server Amazon mengerti permintaannya
+        apiService.getProductReviews(asin, "US", "TOP_REVIEWS").enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(@NonNull Call<ReviewResponse> call, @NonNull Response<ReviewResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     List<ReviewItem> reviews = response.body().getData().getReviews();
 
                     if (reviews != null && !reviews.isEmpty()) {
+                        // Ulasan ada isinya, munculkan ke layar
                         if (rvProductReviews != null) {
                             reviewAdapter = new ReviewAdapter(DetailActivity.this, reviews);
                             rvProductReviews.setAdapter(reviewAdapter);
                         }
                     } else {
-                        Log.d("REVIEW_DEBUG", "Ulasan kosong untuk produk ini.");
+                        // PERBAIKAN: Jika ulasan kosong, beritahu lewat Toast agar layar tidak terkesan nge-bug!
+                        Toast.makeText(DetailActivity.this, "Belum ada teks ulasan untuk produk ini dari Amazon.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Log.e("API_ERROR", "Gagal mengambil ulasan: " + response.code());
+                    Toast.makeText(DetailActivity.this, "Gagal memuat ulasan. Status: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ReviewResponse> call, @NonNull Throwable t) {
-                Log.e("API_ERROR", "Koneksi ulasan gagal: " + t.getMessage());
+                Toast.makeText(DetailActivity.this, "Koneksi terputus: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate; // Jangan lupa import ini
+import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        // 2. CEK TIKET SESI LOGIN (AUTO-LOGIN)
+        // 2. CEK TIKET SESI LOGIN (AUTO-LOGIN) - Menggunakan file asli "AkunApp" milikmu
         SharedPreferences userPrefs = getSharedPreferences("AkunApp", MODE_PRIVATE);
         boolean isLoggedIn = userPrefs.getBoolean("isLoggedIn", false);
 
@@ -51,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
             String emailInput = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
             String passwordInput = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
 
-            // Ambil data dari brankas (hasil register)
+            // Ambil data dari brankas (hasil register bawaan aplikasimu)
+            String savedName = userPrefs.getString("name", "Pengguna Lumina"); // Tarik nama hasil register
             String savedEmail = userPrefs.getString("email", "");
             String savedPassword = userPrefs.getString("password", "");
 
@@ -64,6 +65,11 @@ public class LoginActivity extends AppCompatActivity {
                 // SIMPAN TIKET LOGIN KE BRANKAS
                 SharedPreferences.Editor editor = userPrefs.edit();
                 editor.putBoolean("isLoggedIn", true);
+
+                // MENYELIPKAN DATA SAKTI: Mengunci nama dan email aktif untuk halaman profil
+                editor.putString("active_name", savedName);
+                editor.putString("active_email", savedEmail);
+
                 editor.apply();
 
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show();

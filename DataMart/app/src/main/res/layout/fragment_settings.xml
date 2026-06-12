@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/background_light"
+    tools:ignore="HardcodedText,ContentDescription,Spelling">
 
-    <!-- Top Bar -->
     <LinearLayout
         android:id="@+id/topBarSettings"
         android:layout_width="match_parent"
@@ -44,7 +45,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/topBarSettings"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationMockSettings">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +53,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- KARTU PROFIL (Telah Dipercantik) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +67,6 @@
                     android:layout_height="wrap_content"
                     android:padding="20dp">
 
-                    <!-- Bingkai Foto -->
                     <FrameLayout
                         android:id="@+id/flProfileFrame"
                         android:layout_width="64dp"
@@ -80,7 +79,9 @@
                             app:cardCornerRadius="32dp"
                             app:cardElevation="0dp"
                             app:strokeWidth="0dp">
+
                             <ImageView
+                                android:id="@+id/ivProfilePhoto"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -96,7 +97,6 @@
                             android:padding="2dp" />
                     </FrameLayout>
 
-                    <!-- Nama dan Email -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -105,27 +105,28 @@
                         android:layout_toEndOf="@id/flProfileFrame"
                         android:layout_toStartOf="@id/btnEditProfile"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/tvProfileName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Budi Santoso"
+                            android:text="Nama Pengguna"
                             android:textColor="@color/text_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/tvProfileEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="budi.santoso@email.com"
+                            android:text="email@domain.com"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
                             android:ellipsize="end"
                             android:maxLines="1"/>
                     </LinearLayout>
 
-                    <!-- TOMBOL EDIT BARU (Lebih Cantik & Interaktif) -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnEditProfile"
                         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
@@ -147,7 +148,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Mode Aplikasi -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -220,7 +220,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Preferensi & Bantuan -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -417,7 +416,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Tombol Keluar Akun -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -447,50 +445,5 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Mock Navigasi Bawah -->
-    <LinearLayout
-        android:id="@+id/bottomNavigationMockSettings"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/white"
-        android:elevation="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Beranda"
-            android:textColor="@color/text_secondary"
-            android:textSize="10sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Kategori"
-            android:textColor="@color/text_secondary"
-            android:textSize="10sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Pesanan"
-            android:textColor="@color/text_secondary"
-            android:textSize="10sp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Pengaturan"
-            android:textColor="@color/lumina_blue"
-            android:textSize="10sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
