@@ -39,72 +39,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        CategoryItem category = categoryList.get(position);
+        CategoryItem item = categoryList.get(position);
+        if (item != null) {
+            holder.tvCategoryName.setText(item.getName());
 
-        // 1. Set Nama Kategori
-        if (category.getName() != null) {
-            holder.tvCategoryName.setText(category.getName());
-        } else {
-            holder.tvCategoryName.setText("Kategori");
+            // Sensor klik untuk memicu perubahan produk secara mandiri
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onCategoryClick(item.getName());
+                }
+            });
         }
-
-        // 2. Set Ikon Berdasarkan Nama Kategori
-        if (category.getName() != null) {
-            String namaKategori = category.getName().toLowerCase();
-
-            if (namaKategori.contains("book") || namaKategori.contains("audible") || namaKategori.contains("magazine") || namaKategori.contains("kindle") || namaKategori.contains("educational")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_buku);
-
-            } else if (namaKategori.contains("clothing") || namaKategori.contains("fashion") || namaKategori.contains("men") || namaKategori.contains("women") || namaKategori.contains("girls") || namaKategori.contains("boys") || namaKategori.contains("luggage") || namaKategori.contains("luxury")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_baju);
-
-            } else if (namaKategori.contains("computer") || namaKategori.contains("electronic") || namaKategori.contains("cell phone") || namaKategori.contains("amazon devices") || namaKategori.contains("smart home")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_elektronik);
-
-            } else if (namaKategori.contains("software") || namaKategori.contains("video game") || namaKategori.contains("apps") || namaKategori.contains("alexa") || namaKategori.contains("aws")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_mainan);
-
-            } else if (namaKategori.contains("sport") || namaKategori.contains("outdoor")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_olahraga);
-
-            } else if (namaKategori.contains("home") || namaKategori.contains("kitchen") || namaKategori.contains("garden") || namaKategori.contains("appliance")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_rumah);
-
-            } else if (namaKategori.contains("movie") || namaKategori.contains("tv") || namaKategori.contains("music") || namaKategori.contains("cd") || namaKategori.contains("vinyl") || namaKategori.contains("prime video")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_hiburan);
-
-            } else if (namaKategori.contains("grocery") || namaKategori.contains("food") || namaKategori.contains("fresh")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_makanan);
-
-            } else if (namaKategori.contains("health") || namaKategori.contains("beauty") || namaKategori.contains("pharmacy") || namaKategori.contains("baby") || namaKategori.contains("personal care")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_kesehatan);
-
-            } else if (namaKategori.contains("automotive") || namaKategori.contains("industrial") || namaKategori.contains("tool")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_alat);
-
-            } else if (namaKategori.contains("art") || namaKategori.contains("craft") || namaKategori.contains("sewing") || namaKategori.contains("handmade") || namaKategori.contains("collectible") || namaKategori.contains("instrument")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_seni);
-
-            } else if (namaKategori.contains("card") || namaKategori.contains("payment") || namaKategori.contains("subscribe")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_kartu);
-
-            } else if (namaKategori.contains("pet")) {
-                holder.ivCategoryIcon.setImageResource(R.drawable.ic_kategori_hiburan);
-
-            } else {
-                // Ikon default jika kategori tidak masuk daftar di atas
-                holder.ivCategoryIcon.setImageResource(android.R.drawable.ic_menu_gallery);
-            }
-        } else {
-            holder.ivCategoryIcon.setImageResource(android.R.drawable.ic_menu_gallery);
-        }
-
-        // 3. Sensor Klik
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null && category.getName() != null) {
-                listener.onCategoryClick(category.getName());
-            }
-        });
     }
 
     @Override

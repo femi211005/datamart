@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="4.9 (124 Ulasan)"
+                            android:text="4.9"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -152,9 +152,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Red Velocity Phantom\nPro"
+                        android:hint="Memuat nama produk..."
                         android:textColor="@color/text_primary"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:lineSpacingExtra="2dp" />
 
@@ -169,20 +169,10 @@
                             android:id="@+id/tvDetailProductPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rp 2.499.000"
+                            android:hint="Memuat harga..."
                             android:textColor="@color/lumina_blue"
                             android:textSize="24sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Rp 3.200.000"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            android:background="@android:drawable/ic_menu_close_clear_cancel"
-                            android:backgroundTint="@color/text_secondary" />
                     </LinearLayout>
 
                     <TextView
@@ -199,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:lineSpacingExtra="5dp"
-                        android:text="Rasakan kenyamanan maksimal dengan Red Velocity Phantom Pro. Didesain menggunakan teknologi aerodinamis terbaru untuk performa lari yang tak tertandingi. Material mesh premium memastikan sirkulasi udara optimal, menjaga kaki tetap sejuk bahkan dalam aktivitas intensitas tinggi."
+                        android:text="Informasi dan spesifikasi lengkap produk dapat dilihat langsung dari detail data resmi deskripsi retail server Amazon US."
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
@@ -242,15 +232,6 @@
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
                             android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:text="Ukuran"
-                            android:textColor="@color/lumina_blue"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -264,20 +245,8 @@
                             android:layout_height="44dp"
                             android:orientation="horizontal"
                             android:weightSum="4">
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="40" android:textColor="@color/text_primary" android:textSize="12sp"/>
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="41" android:textColor="@color/lumina_blue" android:textSize="12sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="42" android:textColor="@color/text_primary" android:textSize="12sp"/>
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="43" android:textColor="@color/text_primary" android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="44dp"
-                            android:layout_marginTop="6dp"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="44" android:textColor="@color/text_primary" android:textSize="12sp"/>
-                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:backgroundTint="#F4F6F9" android:gravity="center" android:text="45" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" android:background="@drawable/bg_size_unselected" android:gravity="center" android:text="Standard" android:textColor="@color/text_primary" android:textSize="12sp"/>
+                            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" />
                             <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" />
                             <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="3dp" />
                         </LinearLayout>
@@ -307,7 +276,6 @@
                                 android:padding="14dp">
                                 <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_dialog_map" app:tint="@color/lumina_blue" />
                                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Gratis Ongkir" android:textStyle="bold" android:textSize="13sp" android:textColor="@color/text_primary"/>
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Min. belanja Rp 500b" android:textSize="11sp" android:textColor="@color/text_secondary"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -327,11 +295,32 @@
                                 android:padding="14dp">
                                 <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_lock_power_off" app:tint="@color/lumina_blue" />
                                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Garansi Ori" android:textStyle="bold" android:textSize="13sp" android:textColor="@color/text_primary"/>
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Jaminan uang kembali" android:textSize="11sp" android:textColor="@color/text_secondary"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#E0E0E0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Ulasan Pelanggan (Amazon)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvProductReviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:nestedScrollingEnabled="false" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

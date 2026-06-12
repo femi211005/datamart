@@ -37,6 +37,9 @@
         <activity
             android:name=".CheckoutActivity"
             android:exported="false" />
+        <activity
+            android:name=".SuccessActivity"
+            android:exported="false" />
 
     </application>
 
