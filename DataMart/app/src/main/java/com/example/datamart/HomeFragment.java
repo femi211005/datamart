@@ -130,7 +130,6 @@ public class HomeFragment extends Fragment {
                     categoryList = response.body().getData();
 
                     if (rvHomeCategories != null) {
-                        // FIX PERBAIKAN: categoryName langsung berupa data String murni dari adapter, jangan panggil .getName() lagi
                         categoryAdapter = new CategoryAdapter(getContext(), categoryList, categoryName -> {
                             if (categoryName != null && !categoryName.isEmpty()) {
                                 Toast.makeText(getContext(), "Memuat Kategori: " + categoryName, Toast.LENGTH_SHORT).show();

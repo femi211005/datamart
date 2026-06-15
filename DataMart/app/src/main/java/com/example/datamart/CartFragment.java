@@ -37,46 +37,35 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartChangeLi
         tvTotalPayment = view.findViewById(R.id.tvTotalPaymentPrice);
         tvStickyTotal = view.findViewById(R.id.tvStickyTotalPrice);
 
-        // Mengambil tombol Checkout yang baru kita beri ID di XML
         MaterialButton btnCheckout = view.findViewById(R.id.btnCheckout);
 
         dbHelper = new DatabaseHelper(getContext());
 
-        // 2. Setup RecyclerView dan Pasang Adapter dengan 3 Argumen yang Sesuai
         if (rvCartItems != null) {
             rvCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
-            Cursor cursor = dbHelper.getCartItems(); // Menggunakan nama fungsi getCartItems() dari DatabaseHelper
+            Cursor cursor = dbHelper.getCartItems();
             adapter = new CartAdapter(getContext(), cursor, this);
             rvCartItems.setAdapter(adapter);
         }
 
-        // 3. Hitung total belanjaan pertama kali saat halaman dibuka
         calculateTotal();
 
-        // 4. LOGIKA TOMBOL CHECKOUT
         if (btnCheckout != null) {
             btnCheckout.setOnClickListener(v -> {
-                // Jangan biarkan pindah halaman kalau keranjangnya masih kosong
                 if (adapter == null || adapter.getItemCount() == 0) {
                     Toast.makeText(getContext(), "Keranjang belanjamu masih kosong!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Beri perintah Intent untuk pindah ke CheckoutActivity
                     Intent intent = new Intent(getActivity(), CheckoutActivity.class);
                     startActivity(intent);
                 }
             });
         }
-
         return view;
     }
-
-    // Fungsi otomatis berjalan jika ada item yang dihapus dari keranjang belanja
     @Override
     public void onCartChanged() {
         calculateTotal();
     }
-
-    // Logika Hitung Otomatis Total Belanjaan dari SQLite
     private void calculateTotal() {
         if (dbHelper == null) return;
 
@@ -88,29 +77,23 @@ public class CartFragment extends Fragment implements CartAdapter.OnCartChangeLi
                 String priceStr = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PRICE));
                 int qty = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_QUANTITY));
 
-                // Membersihkan simbol mata uang agar bisa dihitung secara matematis
                 String cleanPrice = priceStr.replaceAll("[^0-9]", "");
                 if (!cleanPrice.isEmpty()) {
-                    subtotal += (Long.parseLong(cleanPrice) * qty);
+                      subtotal += (Long.parseLong(cleanPrice) * qty);
                 }
             }
             cursor.close();
         }
-
-        // Ditambah Ongkir (25rb) dikurang Diskon (50rb) sesuai rincian ringkasan pesanan Lumina
-        long totalPayment = subtotal + 25000 - 50000;
+        long totalPayment = subtotal + 25000;
         if (totalPayment < 0 || subtotal == 0) totalPayment = 0;
 
-        // Set nilai teks ke layar handphone
         if (tvSubtotal != null) tvSubtotal.setText("Rp " + String.format("%,d", subtotal).replace(',', '.'));
         if (tvTotalPayment != null) tvTotalPayment.setText("Rp " + String.format("%,d", totalPayment).replace(',', '.'));
         if (tvStickyTotal != null) tvStickyTotal.setText("Rp " + String.format("%,d", totalPayment).replace(',', '.'));
     }
-
     @Override
     public void onResume() {
         super.onResume();
-        // Memastikan isi keranjang langsung ter-refresh otomatis saat user kembali ke halaman ini
         if (adapter != null && dbHelper != null) {
             adapter.swapCursor(dbHelper.getCartItems());
             calculateTotal();

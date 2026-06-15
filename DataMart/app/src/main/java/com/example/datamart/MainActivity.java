@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // --- BACA SHAREDPREFERENCES (Mengingat Tema Terakhir) ---
         SharedPreferences sharedPreferences = getSharedPreferences("TemaApp", MODE_PRIVATE);
         boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
         if (isDarkMode) {
@@ -22,12 +21,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        // --------------------------------------------------------
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // PERBAIKAN: Menggunakan ID yang benar dari activity_main.xml
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         if (savedInstanceState == null) {
@@ -45,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.menu_pesanan) {
                 selectedFragment = new CartFragment();
             } else if (itemId == R.id.menu_kategori) {
-                // SEKARANG MEMBUKA HALAMAN KATEGORI
                 selectedFragment = new CategoryFragment();
             } else if (itemId == R.id.menu_pengaturan) {
-                // SEKARANG MEMBUKA HALAMAN PENGATURAN
                 selectedFragment = new SettingsFragment();
             }
 

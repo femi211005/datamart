@@ -14,7 +14,6 @@ public class SuccessActivity extends AppCompatActivity {
         MaterialButton btnBackToHome = findViewById(R.id.btnBackToHome);
         if (btnBackToHome != null) {
             btnBackToHome.setOnClickListener(v -> {
-                // Kembali ke halaman beranda utama dan hapus seluruh tumpukan halaman checkout lama
                 Intent intent = new Intent(SuccessActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

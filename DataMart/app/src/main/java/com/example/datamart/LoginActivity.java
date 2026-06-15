@@ -13,8 +13,6 @@ import com.google.android.material.textfield.TextInputEditText;
 public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // 1. CEK TEMA TERLEBIH DAHULU SEBELUM MENGGAMBAR LAYAR
         SharedPreferences themePrefs = getSharedPreferences("TemaApp", MODE_PRIVATE);
         boolean isDarkMode = themePrefs.getBoolean("dark_mode", false);
         if (isDarkMode) {
@@ -24,49 +22,37 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-
-        // 2. CEK TIKET SESI LOGIN (AUTO-LOGIN) - Menggunakan file asli "AkunApp" milikmu
         SharedPreferences userPrefs = getSharedPreferences("AkunApp", MODE_PRIVATE);
         boolean isLoggedIn = userPrefs.getBoolean("isLoggedIn", false);
-
-        // Jika user sudah login sebelumnya, langsung pindah ke Beranda (MainActivity)
         if (isLoggedIn) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
             return;
         }
-
-        // Jika belum login, tampilkan halaman Login
         setContentView(R.layout.activity_login);
 
-        // Menghubungkan ID dari XML
         TextInputEditText etEmail = findViewById(R.id.etEmailLogin);
         TextInputEditText etPassword = findViewById(R.id.etPasswordLogin);
         MaterialButton btnLogin = findViewById(R.id.btnLogin);
         TextView tvGoToRegister = findViewById(R.id.tvGoToRegister);
 
-        // Aksi ketika tombol Masuk diklik
         btnLogin.setOnClickListener(v -> {
             String emailInput = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
             String passwordInput = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
 
-            // Ambil data dari brankas (hasil register bawaan aplikasimu)
-            String savedName = userPrefs.getString("name", "Pengguna Lumina"); // Tarik nama hasil register
+            String savedName = userPrefs.getString("name", "Pengguna Datamart");
             String savedEmail = userPrefs.getString("email", "");
             String savedPassword = userPrefs.getString("password", "");
 
             if (emailInput.isEmpty() || passwordInput.isEmpty()) {
                 Toast.makeText(this, "Email dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
             }
-            // COCOKKAN DATA INPUT DENGAN BRANKAS
             else if (emailInput.equals(savedEmail) && passwordInput.equals(savedPassword)) {
 
-                // SIMPAN TIKET LOGIN KE BRANKAS
                 SharedPreferences.Editor editor = userPrefs.edit();
                 editor.putBoolean("isLoggedIn", true);
 
-                // MENYELIPKAN DATA SAKTI: Mengunci nama dan email aktif untuk halaman profil
                 editor.putString("active_name", savedName);
                 editor.putString("active_email", savedEmail);
 
@@ -74,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
 
-                // Pindah ke Beranda
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -82,8 +67,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Email atau Password salah! (Atau akun belum didaftarkan)", Toast.LENGTH_SHORT).show();
             }
         });
-
-        // Aksi ketika teks "Daftar sekarang" diklik
         tvGoToRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);

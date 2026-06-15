@@ -116,8 +116,6 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
     }
-
-    // Fungsi mengambil ulasan asli dari endpoint Amazon
     private void fetchProductReviews(String asin) {
         // PERBAIKAN: Gunakan "TOP_REVIEWS" agar server Amazon mengerti permintaannya
         apiService.getProductReviews(asin, "US", "TOP_REVIEWS").enqueue(new Callback<ReviewResponse>() {
@@ -127,7 +125,6 @@ public class DetailActivity extends AppCompatActivity {
                     List<ReviewItem> reviews = response.body().getData().getReviews();
 
                     if (reviews != null && !reviews.isEmpty()) {
-                        // Ulasan ada isinya, munculkan ke layar
                         if (rvProductReviews != null) {
                             reviewAdapter = new ReviewAdapter(DetailActivity.this, reviews);
                             rvProductReviews.setAdapter(reviewAdapter);
